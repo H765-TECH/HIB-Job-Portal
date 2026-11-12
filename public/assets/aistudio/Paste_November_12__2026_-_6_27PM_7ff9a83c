@@ -1,0 +1,599 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIB Recruitment Services - Remote Job Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              hib: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e293b',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom Smooth Transitions & Subtle Depth */
+      .job-card {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .job-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -10px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      }
+      .badge-wfa {
+        background-color: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+      }
+      .badge-wfh {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+      }
+      .badge-hybrid {
+        background-color: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Brand Logo & Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-blue-500/20">
+                        HIB
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-slate-900 text-lg tracking-tight block leading-none">HIB Recruitment</span>
+                        <span class="text-xs font-semibold text-blue-600 tracking-wider uppercase">Remote Job Portal</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Action Buttons -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleAiModal()" class="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold hover:bg-emerald-100 transition">
+                        <i class="fa-solid fa-robot text-emerald-600"></i> AI Auto-Importer Live Demo
+                    </button>
+                    <a href="#employer-banner" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 px-3 py-2 transition">
+                        For Employers
+                    </a>
+                    <a href="#post-job" onclick="openPostJobModal()" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition shadow-sm shadow-blue-500/30">
+                        <i class="fa-solid fa-plus text-xs"></i> Post a Remote Job
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-14 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-semibold mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Verified Work From Anywhere & WFH Opportunities
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    Find Your Next Remote Career <br class="hidden sm:inline"/><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Without Location Boundaries</span>
+                </h1>
+                <p class="text-slate-300 text-base sm:text-lg mb-8 max-w-2xl mx-auto font-normal">
+                    Curated by HIB Recruitment Services. Connecting global tech, marketing, and operations talent with top-tier remote employers.
+                </p>
+
+                <!-- Search & Filters Console -->
+                <div class="bg-white rounded-2xl p-3 shadow-2xl border border-slate-700/50 text-slate-800 text-left max-w-3xl mx-auto">
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <!-- Keyword Input -->
+                        <div class="relative flex-grow">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                            <input type="text" id="searchInput" placeholder="Job title, key skills, or company..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm transition">
+                        </div>
+
+                        <!-- Category Select -->
+                        <div class="sm:w-48">
+                            <select id="categorySelect" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-slate-700 transition">
+                                <option value="all">All Categories</option>
+                                <option value="Software & Tech">Software & Tech</option>
+                                <option value="Marketing & Content">Marketing & Content</option>
+                                <option value="Customer Support">Customer Support</option>
+                                <option value="Executive & Fractional">Executive & Fractional</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Remote Type Pills -->
+                    <div class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-100 px-1">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">Remote Filter:</span>
+                        <button onclick="setRemoteFilter('all')" class="filter-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition">All Roles</button>
+                        <button onclick="setRemoteFilter('100% WFA')" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">🌍 100% Work From Anywhere</button>
+                        <button onclick="setRemoteFilter('WFH Regional')" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">🏠 WFH (Regional/US)</button>
+                        <button onclick="setRemoteFilter('Hybrid')" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">🏢 Hybrid Remote</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            
+            <!-- Active Jobs Header -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Active Remote Opportunities</h2>
+                    <p class="text-xs text-slate-500 mt-0.5" id="jobCountLabel">Showing all listings</p>
+                </div>
+                <button onclick="triggerSimulatedImport()" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 transition">
+                    <i class="fa-solid fa-arrows-rotate text-blue-500"></i> Refresh AI Feed
+                </button>
+            </div>
+
+            <!-- Job Cards Listing Container -->
+            <div id="jobsList" class="space-y-3">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Agency Lead Magnet Banner -->
+            <section id="employer-banner" class="my-12 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl">
+                <div class="absolute right-0 bottom-0 translate-x-10 translate-y-10 opacity-10 text-white text-9xl font-black">HIB</div>
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider mb-3">
+                        HIB Recruitment Agency Services
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-3 leading-snug">
+                        Struggling to Vet & Screen 200+ Remote Applicants?
+                    </h3>
+                    <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
+                        Don't let unqualified applications slow down your hiring. HIB Recruitment Services sources, headhunts, and vets the top 5% of global remote talent for your open positions.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button onclick="openConsultationModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm px-6 py-3 rounded-xl transition shadow-lg shadow-blue-500/30">
+                            Book a Candidate Discovery Call
+                        </button>
+                        <span class="text-xs text-slate-400 flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Guaranteed replacement within 90 days
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletter Subscription Widget -->
+            <section class="bg-slate-900 text-white rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden border border-slate-800 shadow-xl">
+                <div class="max-w-xl mx-auto relative z-10">
+                    <div class="w-12 h-12 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                        <i class="fa-regular fa-paper-plane text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-extrabold mb-2 text-white">Get Daily Remote Roles in Your Inbox</h3>
+                    <p class="text-slate-400 text-sm mb-6">
+                        Join 12,000+ professionals. Hand-picked Work From Anywhere and Work From Home positions delivered every Monday morning.
+                    </p>
+                    
+                    <form onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+                        <input type="email" id="subscriberEmail" required placeholder="Enter your work email address..." class="flex-grow px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-slate-500">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm">
+                            Subscribe
+                        </button>
+                    </form>
+                    <p class="text-xs text-slate-500 mt-3">No spam. Unsubscribe anytime. Curated by HIB Recruitment.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 mt-auto">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-medium text-slate-700">© 2026 HIB Recruitment Services. All rights reserved.</p>
+            <p class="mt-1 text-slate-400">Connecting Work From Anywhere (WFA) & Work From Home (WFH) Talent Worldwide.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Job Details Modal -->
+    <div id="jobModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeJobModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Dynamically Rendered -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: AI Automation Workflow Demo Modal -->
+    <div id="aiModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 text-slate-100 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative border border-slate-800 shadow-2xl">
+            <button onclick="toggleAiModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/30">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Automated AI Job Ingestion Pipeline</h3>
+                    <p class="text-xs text-slate-400">How HIB posts verified remote jobs automatically every day</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs font-mono bg-slate-950 p-4 rounded-xl border border-slate-800 text-slate-300">
+                <div class="flex items-start gap-3">
+                    <span class="text-emerald-400 font-bold">[1. Cron Trigger]</span>
+                    <span>Runs daily at 08:00 AM UTC via Make.com scenario.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-blue-400 font-bold">[2. RSS Scraper]</span>
+                    <span>Fetches raw remote feeds (RemoteOK, WeWorkRemotely APIs).</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-purple-400 font-bold">[3. OpenAI API]</span>
+                    <span>Cleans job specs, auto-tags "100% WFA" vs "WFH Regional", extracts salary data.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-amber-400 font-bold">[4. WP REST API]</span>
+                    <span>Auto-publishes clean job cards to HIB WordPress job board instantly.</span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="triggerSimulatedImport(); toggleAiModal();" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                    Simulate AI Fetch Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Agency Consultation Modal -->
+    <div id="consultationModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <button onclick="closeConsultationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Request HIB Recruitment Support</h3>
+            <p class="text-xs text-slate-500 mb-4">Let our specialized recruiters source and screen remote candidates for your active openings.</p>
+
+            <form onsubmit="handleAgencyLeadSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Company Name</label>
+                    <input type="text" required placeholder="e.g. Acme Corp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Work Email</label>
+                    <input type="email" required placeholder="hiring@acme.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Role You Are Hiring For</label>
+                    <input type="text" required placeholder="e.g. Senior Full Stack Developer" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-sm transition">
+                    Submit Recruitment Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+        <span id="toastMsg" class="text-xs font-medium">Action successful!</span>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+      // Initial Job Database Seed
+      const sampleJobs = [
+        {
+          id: 1,
+          title: "Senior Full Stack Engineer (Node + React)",
+          company: "Gitlab Ecosystem",
+          logo: "https://placehold.co/100x100/1e293b/ffffff?text=GIT",
+          category: "Software & Tech",
+          remoteType: "100% WFA",
+          location: "Global / Worldwide",
+          salary: "$110,000 - $140,000",
+          type: "Full-Time",
+          posted: "2 hours ago",
+          featured: true,
+          description: "We are seeking a Senior Full Stack Engineer to join our decentralized product team. You will build high-concurrency microservices and responsive React interfaces.",
+          requirements: ["5+ years experience with Node.js & React", "Proven track record in remote-first team environments", "Deep understanding of PostgreSQL and Redis"]
+        },
+        {
+          id: 2,
+          title: "Remote Growth Marketing Lead",
+          company: "SaaS Scaleup",
+          logo: "https://placehold.co/100x100/2563eb/ffffff?text=SaaS",
+          category: "Marketing & Content",
+          remoteType: "100% WFA",
+          location: "Global / Worldwide",
+          salary: "$85,000 - $105,000",
+          type: "Full-Time",
+          posted: "5 hours ago",
+          featured: false,
+          description: "Manage paid acquisition channels, organic SEO content loops, and lifecycle email automation to scale our SaaS customer base.",
+          requirements: ["3+ years performance marketing experience", "Proficiency with Google Analytics 4, Mixpanel, and Meta Ads", "Excellent analytical and copywriting skills"]
+        },
+        {
+          id: 3,
+          title: "Customer Success Manager (EMEA Timezones)",
+          company: "CloudFlow Systems",
+          logo: "https://placehold.co/100x100/059669/ffffff?text=CFS",
+          category: "Customer Support",
+          remoteType: "WFH Regional",
+          location: "Work From Home (EMEA Region)",
+          salary: "$60,000 - $75,000",
+          type: "Full-Time",
+          posted: "1 day ago",
+          featured: false,
+          description: "Serve as the primary point of contact for mid-market enterprise accounts across Europe and Africa. Drive onboarding, feature adoption, and retention.",
+          requirements: ["Fluency in English (German or French is a plus)", "2+ years in B2B SaaS account management", "Strong technical troubleshooting abilities"]
+        },
+        {
+          id: 4,
+          title: "Fractional Chief Marketing Officer (CMO)",
+          company: "HIB Client Partners",
+          logo: "https://placehold.co/100x100/7c3aed/ffffff?text=HIB",
+          category: "Executive & Fractional",
+          remoteType: "100% WFA",
+          location: "Global / Worldwide",
+          salary: "$120/hr - $150/hr",
+          type: "Fractional / Contract",
+          posted: "Just now",
+          featured: true,
+          description: "Directly headhunted by HIB Recruitment Services. High-growth Series A startup seeking a fractional CMO to drive strategic brand positioning.",
+          requirements: ["Prior C-suite experience in tech startups", "Proven capability in building GTM frameworks", "10-15 hours per week availability"]
+        },
+        {
+          id: 5,
+          title: "DevOps & Infrastructure Architect",
+          company: "Vercel Ecosystem",
+          logo: "https://placehold.co/100x100/0f172a/ffffff?text=VER",
+          category: "Software & Tech",
+          remoteType: "WFH Regional",
+          location: "Work From Home (US/Canada)",
+          salary: "$130,000 - $160,000",
+          type: "Full-Time",
+          posted: "2 days ago",
+          featured: false,
+          description: "Maintain terraform deployments, Kubernetes clusters, and automated CI/CD deployment pipelines.",
+          requirements: ["AWS Certified Solutions Architect", "Strong experience with Docker, K8s, and GitHub Actions", "On-call rotation availability"]
+        }
+      ];
+
+      let currentJobs = [...sampleJobs];
+      let activeRemoteFilter = 'all';
+
+      // Render Job List
+      function renderJobs(jobs) {
+        const container = document.getElementById('jobsList');
+        const countLabel = document.getElementById('jobCountLabel');
+        
+        countLabel.textContent = `Showing ${jobs.length} active remote role${jobs.length === 1 ? '' : 's'}`;
+
+        if (jobs.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
+              <i class="fa-solid fa-folder-open text-slate-300 text-4xl mb-3"></i>
+              <h4 class="text-base font-bold text-slate-700">No matching remote jobs found</h4>
+              <p class="text-xs text-slate-400 mt-1">Try adjusting your keyword search or remote filter options.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = jobs.map(job => {
+          let badgeStyle = 'badge-wfa';
+          if (job.remoteType === 'WFH Regional') badgeStyle = 'badge-wfh';
+          if (job.remoteType === 'Hybrid') badgeStyle = 'badge-hybrid';
+
+          return `
+            <div class="job-card bg-white rounded-2xl p-5 border ${job.featured ? 'border-blue-200 bg-blue-50/20' : 'border-slate-200'} flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer" onclick="openJobModal(${job.id})">
+              <div class="flex items-start gap-4">
+                <img src="${job.logo}" alt="${job.company}" class="w-12 h-12 rounded-xl object-cover border border-slate-100 flex-shrink-0">
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 mb-1">
+                    <span class="text-xs font-bold text-slate-500">${job.company}</span>
+                    ${job.featured ? '<span class="text-[10px] font-extrabold bg-blue-600 text-white px-2 py-0.5 rounded-md uppercase tracking-wider">Featured</span>' : ''}
+                  </div>
+                  <h3 class="text-base font-bold text-slate-900 leading-snug hover:text-blue-600 transition">${job.title}</h3>
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-slate-500 font-medium">
+                    <span><i class="fa-solid fa-tag text-slate-400 mr-1"></i>${job.category}</span>
+                    <span><i class="fa-solid fa-dollar-sign text-slate-400 mr-1"></i>${job.salary}</span>
+                    <span><i class="fa-regular fa-clock text-slate-400 mr-1"></i>${job.posted}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap md:flex-col items-start md:items-end justify-between w-full md:w-auto border-t md:border-t-0 pt-3 md:pt-0 border-slate-100 gap-2">
+                <span class="text-xs font-semibold px-3 py-1 rounded-full ${badgeStyle}">
+                  ${job.location}
+                </span>
+                <span class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+                  View Role <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Filter Logic
+      function filterJobs() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const selectedCategory = document.getElementById('categorySelect').value;
+
+        const filtered = currentJobs.filter(job => {
+          const matchesSearch = job.title.toLowerCase().includes(searchTerm) || 
+                                job.company.toLowerCase().includes(searchTerm) ||
+                                job.description.toLowerCase().includes(searchTerm);
+          
+          const matchesCategory = selectedCategory === 'all' || job.category === selectedCategory;
+          
+          const matchesRemote = activeRemoteFilter === 'all' || 
+                                (activeRemoteFilter === '100% WFA' && job.remoteType === '100% WFA') ||
+                                (activeRemoteFilter === 'WFH Regional' && job.remoteType === 'WFH Regional') ||
+                                (activeRemoteFilter === 'Hybrid' && job.remoteType === 'Hybrid');
+
+          return matchesSearch && matchesCategory && matchesRemote;
+        });
+
+        renderJobs(filtered);
+      }
+
+      function setRemoteFilter(filterType) {
+        activeRemoteFilter = filterType;
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+          btn.classList.remove('bg-blue-600', 'text-white');
+          btn.classList.add('bg-slate-100', 'text-slate-600');
+        });
+        event.target.classList.remove('bg-slate-100', 'text-slate-600');
+        event.target.classList.add('bg-blue-600', 'text-white');
+        filterJobs();
+      }
+
+      // Event Listeners
+      document.getElementById('searchInput').addEventListener('input', filterJobs);
+      document.getElementById('categorySelect').addEventListener('change', filterJobs);
+
+      // Modal Handling
+      function openJobModal(id) {
+        const job = currentJobs.find(j => j.id === id);
+        if (!job) return;
+
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+          <div class="flex items-center gap-4 mb-4">
+            <img src="${job.logo}" class="w-14 h-14 rounded-xl border border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-slate-400 block">${job.company}</span>
+              <h2 class="text-xl font-bold text-slate-900">${job.title}</h2>
+              <span class="text-xs font-semibold text-blue-600">${job.location} • ${job.salary}</span>
+            </div>
+          </div>
+          
+          <div class="border-t border-b border-slate-100 py-4 my-4 space-y-3">
+            <h4 class="text-sm font-bold text-slate-800">Job Overview</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">${job.description}</p>
+            
+            <h4 class="text-sm font-bold text-slate-800 pt-2">Requirements</h4>
+            <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
+              ${job.requirements.map(req => `<li>${req}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6 flex items-center justify-between">
+            <div class="text-xs text-blue-900">
+              <span class="font-bold block">Recruitment Verification</span>
+              Verified role listed via HIB Recruitment Services portal.
+            </div>
+            <button onclick="applyJob('${job.title}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md shadow-blue-500/20">
+              Apply Now
+            </button>
+          </div>
+        `;
+
+        document.getElementById('jobModal').classList.remove('hidden');
+      }
+
+      function closeJobModal() {
+        document.getElementById('jobModal').classList.add('hidden');
+      }
+
+      function applyJob(title) {
+        closeJobModal();
+        showToast(`Redirecting to application form for ${title}...`);
+      }
+
+      function toggleAiModal() {
+        const modal = document.getElementById('aiModal');
+        modal.classList.toggle('hidden');
+      }
+
+      function openConsultationModal() {
+        document.getElementById('consultationModal').classList.remove('hidden');
+      }
+
+      function closeConsultationModal() {
+        document.getElementById('consultationModal').classList.add('hidden');
+      }
+
+      function handleAgencyLeadSubmit(e) {
+        e.preventDefault();
+        closeConsultationModal();
+        showToast("Request submitted! HIB Recruitment will reach out within 2 hours.");
+      }
+
+      function handleSubscribe(e) {
+        e.preventDefault();
+        document.getElementById('subscriberEmail').value = '';
+        showToast("Subscribed! You will receive weekly remote job digests.");
+      }
+
+      function triggerSimulatedImport() {
+        showToast("🤖 AI Pipeline: Fetching & publishing 2 new WFA remote jobs...");
+        setTimeout(() => {
+          const newJob = {
+            id: Date.now(),
+            title: "Senior AI & Data Engineer (Python)",
+            company: "OpenAI Ecosystem Partner",
+            logo: "https://placehold.co/100x100/10a37f/ffffff?text=AI",
+            category: "Software & Tech",
+            remoteType: "100% WFA",
+            location: "Global / Worldwide",
+            salary: "$140,000 - $175,000",
+            type: "Full-Time",
+            posted: "Just now (AI Auto-Import)",
+            featured: true,
+            description: "Auto-imported via Make.com + OpenAI pipeline. Build scalable LLM wrapper pipelines and vector database indexing engines.",
+            requirements: ["4+ years Python backend development", "Hands-on experience with LangChain & Pinecone/Weaviate", "100% remote working experience"]
+          };
+          currentJobs.unshift(newJob);
+          filterJobs();
+        }, 1200);
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3500);
+      }
+
+      // Initial Render
+      renderJobs(currentJobs);
+    </script>
+</body>
+</html>
+```

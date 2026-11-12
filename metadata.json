@@ -1,0 +1,6 @@
+{
+  "name": "HIB Jobs",
+  "description": "HIB Recruitment Services Remote Job Portal - Verified Work From Anywhere (WFA) and WFH opportunities, AI job ingestion pipeline, and agency recruitment support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
